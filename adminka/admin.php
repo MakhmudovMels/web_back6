@@ -44,14 +44,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
       header('Location: admin.php');
   }
 
-  $user_id =  mysqli_real_escape_string($connect ,$_POST['select_user']);//Получение айди выбраного польвователя
+  $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
 
-  //Удаление выбранного пользователя
-  $sql = "DELETE FROM users WHERE id = '$user_id'";
-  mysqli_query($connect, $sql);
   //Удаление всех выбраных им суперспособностей
-  $sql = "DELETE FROM super_power WHERE id = '$user_id'";
-  mysqli_query($connect, $sql);
+  $stmt = $db->prepare("SELECT * FROM superability WHERE human_id = ?");
+  $stmt -> execute([$user_id]);
+  //Удаление выбранного пользователя
+  $stmt = $db->prepare("SELECT * FROM login_pass WHERE human_id = ?");
+  $stmt -> execute([$user_id]);
+  $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
+  $stmt -> execute([$user_id]);
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка изменить данные пользователя
@@ -116,6 +118,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
   <section>Прохождение сквозь стены: <?php print $count2 ?></section> <br>
   <section>Левитация: <?php print $count3 ?></section> <br>
 
+  <h2>Выбери пользователя, которого хочешь отредактировать или удалить</h2>
   <select name="select_user" class ="slc_user" id="selector_user">
     <option selected disabled value ="0">Выбрать пользователя</option>
     <?php
@@ -124,10 +127,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
       $stmt -> execute([$index]);
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
       if($user['id'] == $index){//Проверка на существование пользователя с айди index
-          print("<option value =" . $index . ">" . "id : ". $user['id'] . " Имя : " . $user['name'] . "</option>");//Добавление в список пользователя с существующим айди
+          print("<option value =" . $index . ">" . "id : ". $user['id'] . "; Имя : " . $user['name'] . "</option>");//Добавление в список пользователя с существующим айди
       }
     }
     ?>
   </select>
+  <button name ="delete_user" class="btn_delete" type = "submit">Удалить пользователя</button>
+  <?php
+  if($_POST['select_user'] != 0) print($_POST['select_user']);
+  ?>
 </body>
 </html>
