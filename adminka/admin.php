@@ -121,19 +121,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
   <section>Левитация: <?php print $count3 ?></section> <br>
 
   <h2>Выбери пользователя, которого хочешь отредактировать или удалить</h2>
-  <select name="select_user" class ="slc_user" id="selector_user">
-    <option selected disabled value ="0">Выбрать пользователя</option>
-    <?php
-    for($index =1 ;$index <= $count;$index++){//Заполнение списка пользователями
-      $stmt = $db->prepare("SELECT * FROM human WHERE id = ?");
-      $stmt -> execute([$index]);
-      $user = $stmt->fetch(PDO::FETCH_ASSOC);
-      if($user['id'] == $index){//Проверка на существование пользователя с айди index
-          print("<option value =" . $index . ">" . "id : ". $user['id'] . "; Имя : " . $user['name'] . "</option>");//Добавление в список пользователя с существующим айди
+  <form action="" method="POST">
+    <select name="select_user" class ="slc_user" id="selector_user">
+      <option selected disabled value ="0">Выбрать пользователя</option>
+      <?php
+      for($index =1 ;$index <= $count;$index++){//Заполнение списка пользователями
+        $stmt = $db->prepare("SELECT * FROM human WHERE id = ?");
+        $stmt -> execute([$index]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($user['id'] == $index){//Проверка на существование пользователя с айди index
+            print("<option value =" . $index . ">" . "id: ". $user['id'] . ", Имя: " . $user['name'] . "</option>");//Добавление в список пользователя с существующим айди
+        }
       }
-    }
-    ?>
-  </select>
-  <button name ="delete_user" class="btn_delete" type = "submit">Удалить пользователя</button>
+      ?>
+    </select>
+    <input name="delete_user" type="submit" value="Удалить пользователя" />
+  </form>
 </body>
 </html>
