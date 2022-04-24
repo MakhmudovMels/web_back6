@@ -43,17 +43,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
       header('Location: admin.php');
   }
+  try{
 
-  $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
+    $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
 
-  //Удаление всех выбраных им суперспособностей
-  $stmt = $db->prepare("SELECT * FROM superability WHERE human_id = ?");
-  $stmt -> execute([$user_id]);
-  //Удаление выбранного пользователя
-  $stmt = $db->prepare("SELECT * FROM login_pass WHERE human_id = ?");
-  $stmt -> execute([$user_id]);
-  $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
-  $stmt -> execute([$user_id]);
+    //Удаление всех выбраных им суперспособностей
+    $stmt = $db->prepare("DELETE * FROM superability WHERE human_id = ?");
+    $stmt -> execute([$user_id]);
+    //Удаление выбранного пользователя
+    $stmt = $db->prepare("DELETE * FROM login_pass WHERE human_id = ?");
+    $stmt -> execute([$user_id]);
+    $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
+    $stmt -> execute([$user_id]);
+
+  } catch(PDOException $e){
+      print('Error : ' . $e->getMessage());
+      exit();
+  }
+  
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка изменить данные пользователя
