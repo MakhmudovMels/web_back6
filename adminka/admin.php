@@ -96,9 +96,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
   <h2>Панель администратора</h2>
 
   <h3>Статистика по суперспособностям:</h3>
-  <section>Бессмертие: <?php print $count1 ?></section> <br>
-  <section>Прохождение сквозь стены: <?php print $count2 ?></section> <br>
-  <section>Левитация: <?php print $count3 ?></section> <br>
+  <p>Бессмертие: <?php print $count1 ?></p> <br>
+  <p>Прохождение сквозь стены: <?php print $count2 ?></p> <br>
+  <p>Левитация: <?php print $count3 ?></p> <br>
 
   <h3>Выбери пользователя:</h3>
   <form action="" method="POST">
