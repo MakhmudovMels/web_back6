@@ -43,7 +43,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
       header('Location: admin.php');
   }
-
+  print($_POST['select_user']);
+  /*
   $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
 
   //Удаление всех выбраных им суперспособностей
@@ -54,6 +55,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
   $stmt -> execute([$user_id]);
   $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
   $stmt -> execute([$user_id]);
+  */
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка изменить данные пользователя
@@ -133,8 +135,5 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     ?>
   </select>
   <button name ="delete_user" class="btn_delete" type = "submit">Удалить пользователя</button>
-  <?php
-  if($_POST['select_user'] != 0) print($_POST['select_user']);
-  ?>
 </body>
 </html>
