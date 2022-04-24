@@ -71,6 +71,7 @@
         print('<a href="login.php" class = "enter-exit" title = "Log out">Выйти</a>');
       else
         print('<a href="login.php" class = "enter-exit"  title = "Log in">Войти</a>');
+      print('<a href="admin.php" class = "enter-exit">Админка</a>');
     ?>
   </div>
 </body>

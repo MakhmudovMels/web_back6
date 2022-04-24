@@ -38,6 +38,7 @@ $stmt = $db->query("SELECT max(id) FROM human");
 $row = $stmt->fetch();
 $count = (int) $row[0];//Берем максимальный айди среди пользователей для заполнения списка пользователей
 
+
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])){//Если была нажата кнопка удалить пользователя
 
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
@@ -58,14 +59,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])){//Если �
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка редактировать данные пользователя
-
-  if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
-     header('Location: admin.php');
-  }
   // Перезаписываем данные в БД новыми данными,
   // кроме логина и пароля.
 
-  $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
+  $user_id = (int) $_COOKIE['user_id'];//Получение айди выбраного польвователя
   
   // Обновление данных в таблице human
   $stmt = $db->prepare("UPDATE human SET name = ?, email = ?, year = ?, gender = ?, limbs = ?, bio = ? WHERE id = ?");
@@ -118,8 +115,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
       }
       ?>
     </select><br> 
-    <input name="delete" type="submit" class="send" value="Удалить пользователя" />
-    <input name="editing" type="submit" class="send" value="Редактировать пользователя" />
+    <input name="delete" type="submit" class="send" value="УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ" />
+    <input name="editing" type="submit" class="send" value="РЕДАКТИРОВАТЬ ПОЛЬЗОВАТЕЛЯ" />
   </form>
 
   <?php
@@ -129,6 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
       header('Location: admin.php');
     }
     $user_id = (int) $_POST['select_user'];// получение айди выбраного польвователя
+    setcookie('user_id', $user_id);
     // получаем данные пользователя из бд
     $values = array();
     $stmt = $db->prepare("SELECT * FROM human WHERE id = ?");
