@@ -43,8 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
       header('Location: admin.php');
   }
-  print($_POST['select_user']);
-  /*
+
   $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
 
   //Удаление всех выбраных им суперспособностей
@@ -55,7 +54,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
   $stmt -> execute([$user_id]);
   $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
   $stmt -> execute([$user_id]);
-  */
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка изменить данные пользователя
@@ -115,12 +113,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
   <title>Админка</title>
 </head>
 <body>
-  <h2>Статистика по суперспособностям</h2>
+  <h1>Панель администратора</h1>
+
+  <h4>Статистика по суперспособностям</h4>
   <section>Бессмертие: <?php print $count1 ?></section> <br>
   <section>Прохождение сквозь стены: <?php print $count2 ?></section> <br>
   <section>Левитация: <?php print $count3 ?></section> <br>
 
-  <h2>Выбери пользователя, которого хочешь отредактировать или удалить</h2>
+  <h4>Выбери пользователя, которого хочешь отредактировать или удалить</h4>
   <form action="" method="POST">
     <select name="select_user" class ="slc_user" id="selector_user">
       <option selected disabled value ="0">Выбрать пользователя</option>
