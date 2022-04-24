@@ -60,7 +60,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])){//Если �
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка редактировать данные пользователя
 
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
-     header('Location: adminroom.php');
+     header('Location: admin.php');
   }
   // Перезаписываем данные в БД новыми данными,
   // кроме логина и пароля.
@@ -81,6 +81,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     $stmt = $db->prepare("INSERT INTO superability SET human_id = ?, name_of_superability = ?");
     $stmt -> execute([$user_id, $item]);
   }
+  header('Location: admin.php');
 }
 ?>
 
@@ -95,7 +96,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
 </head>
 <body>
 <div class="container">
-  <h1>Панель администратора</h1>
+  <h2>Панель администратора</h2>
 
   <h3>Статистика по суперспособностям</h3>
   <section>Бессмертие: <?php print $count1 ?></section> <br>
@@ -104,7 +105,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
 
   <h3>Выбери пользователя, которого хочешь отредактировать или удалить</h3>
   <form action="" method="POST">
-    <select name="select_user" class ="slc_user" id="selector_user">
+    <select name="select_user" class ="group list" id="selector_user">
       <option selected disabled value ="0">Выбрать пользователя</option>
       <?php
       for($index =1 ;$index <= $count;$index++){//Заполнение списка пользователями
@@ -117,8 +118,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
       }
       ?>
     </select><br> 
-    <input name="delete" type="submit" value="Удалить пользователя" />
-    <input name="editing" type="submit" value="Редактировать пользователя" />
+    <input name="delete" type="submit" class="send" value="Удалить пользователя" />
+    <input name="editing" type="submit" class="send" value="Редактировать пользователя" />
   </form>
 
   <?php
@@ -158,7 +159,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     E-mail:<br><input type="text" name="email"class="group" value="<?php print $values['email']; ?>">
     <br>
     Год рождения:<br>
-    <select id="year" size="3" name="year" class="group" value="<?php print $values['year']; ?>">
+    <select size="3" name="year" class="group list" value="<?php print $values['year']; ?>">
         <?php for($i = 1900; $i <= date('Y'); $i++): ?>
         <option value="<?=$i?>" <?php if($i == $values['year']) {print 'selected';} ?>><?=$i?></option>
         <?php endfor; ?>
@@ -187,7 +188,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     <div>
       <input type="checkbox" name="checkbox" <?php if ($values['checkbox']) {print 'checked';} ?>> С контрактом ознакомлен(a) 
     </div>
-    <input name="edit" type="submit" id="send" value="СОХРАНИТЬ ИЗМЕНЕНИЯ">
+    <input name="edit" type="submit" class="send" value="СОХРАНИТЬ ИЗМЕНЕНИЯ">
   </form>
 
   <?php

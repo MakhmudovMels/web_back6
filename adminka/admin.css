@@ -25,9 +25,12 @@ body {
     border-radius: 15px;
 }
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 13px;
 
     text-align: center;
+}
+h3 {
+    margin-bottom: 7px;
 }
 input, textarea, select {
     font-size: 14px;
@@ -46,7 +49,7 @@ textarea{
 .group {
     width: 100%;
 }
-#send {
+.send {
     width: 100%;
     height: 50px;
     margin-bottom: 0;
@@ -57,13 +60,13 @@ textarea{
     background-color: white;
     color: black;
 }
-#send:active {
+.send:active {
     transform: scale(.97);
     transition: transform .2s;
 }
 .radio {
     margin-left: 10px;
 }
-#year {
+.list {
     background-color: black;
 }
