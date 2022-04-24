@@ -57,50 +57,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])){//Если �
   header('Location: admin.php');
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка изменить данные пользователя
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если была нажата кнопка редактировать данные пользователя
 
   if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
      header('Location: adminroom.php');
   }
-  //Берем данные об измененных способностях
-  $power1=in_array('s1',$_POST['capabilities']) ? '1' : '0';
-  $power2=in_array('s2',$_POST['capabilities']) ? '1' : '0';
-  $power3=in_array('s3',$_POST['capabilities']) ? '1' : '0';
-  $power4=in_array('s4',$_POST['capabilities']) ? '1' : '0';
+  // Перезаписываем данные в БД новыми данными,
+  // кроме логина и пароля.
 
-  //Способности сохраняются в единную строку которая позже будет сохранена в бд
-  if($power1 == 1){
-      $ability = 'immortal' . ',';
+  $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
+  
+  // Обновление данных в таблице human
+  $stmt = $db->prepare("UPDATE human SET name = ?, email = ?, year = ?, gender = ?, limbs = ?, bio = ? WHERE id = ?");
+  $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['year'], $_POST['gender'], $_POST['limbs'], $_POST['bio'], $user_id]);
+
+  // Обновление данных в таблице superability
+  $stmt = $db->prepare("DELETE FROM superability WHERE human_id = ?");
+  $stmt -> execute([$user_id]);
+
+  $ability = $_POST['ability'];
+
+  foreach($ability as $item) {
+    $stmt = $db->prepare("INSERT INTO superability SET human_id = ?, name_of_superability = ?");
+    $stmt -> execute([$user_id, $item]);
   }
-
-  if($power2 == 1 && !empty($ability)){
-      $ability .= 'noclip' . ',';
-  }else if($power2 == 1 && empty($ability)){
-      $ability = 'noclip' . ',';
-  }
-
-  if($power3 == 1 && !empty($ability)){
-      $ability .= 'flying' . ',';
-  }else if($power3 == 1 && empty($ability)){
-      $ability = 'flying' . ',';
-  }
-
-  if($power4 == 1 && !empty($ability)){
-      $ability .= 'lazer' . ',';
-  }else if($power4 == 1 && empty($ability)){
-      $ability = 'lazer' . ',';
-  }
-
-  //Блок изменения данных пользователя введеных админом
-  $id = $_COOKIE['id'];
-
-  $stmt = $db->prepare("UPDATE users SET name = ?, mail = ?, bio = ?, date = ?, gender = ?, limbs = ? WHERE id = ?");
-  $stmt -> execute(array($_POST['name'],$_POST['email'],$_POST['bio'],$_POST['year'],$_POST['gender'],$_POST['limbs'], $id));
-
-  $stmt = $db->prepare("UPDATE  super_power SET superabilities = ? WHERE human_id = ?");
-  $stmt -> execute([$ability,$id]);
-
-  setcookie('id','',1);
 }
 ?>
 
@@ -114,6 +94,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
   <title>Админка</title>
 </head>
 <body>
+<div class="container">
   <h1>Панель администратора</h1>
 
   <h3>Статистика по суперспособностям</h3>
@@ -139,12 +120,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     <input name="delete" type="submit" value="Удалить пользователя" />
     <input name="editing" type="submit" value="Редактировать пользователя" />
   </form>
-  
+
   <?php
 
   if(isset($_POST['editing']) && $_SERVER['REQUEST_METHOD'] == 'POST'){//Если была нажата кнопка редактировать пользователя
     if($_POST['select_user'] == 0){//Обработчик того был ли выбран пользователь
-      header('Location: adminroom.php');
+      header('Location: admin.php');
     }
     $user_id = (int) $_POST['select_user'];// получение айди выбраного польвователя
     // получаем данные пользователя из бд
@@ -167,7 +148,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
       array_push($ability, strip_tags($row['name_of_superability']));
     }
     $values['ability'] = $ability;
+
   ?>
+  
+  <h3>Режим редактирования</h3>
   <form action="" method="POST">
     Имя:<br><input type="text" name="name" class="group" value="<?php print $values['name']; ?>">
     <br>
@@ -203,10 +187,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     <div>
       <input type="checkbox" name="checkbox" <?php if ($values['checkbox']) {print 'checked';} ?>> С контрактом ознакомлен(a) 
     </div>
-    <input type="submit" id="send" value="ОТПРАВИТЬ">
+    <input name="edit" type="submit" id="send" value="СОХРАНИТЬ ИЗМЕНЕНИЯ">
   </form>
+
   <?php
   }
   ?>
+</div>
 </body>
 </html>
