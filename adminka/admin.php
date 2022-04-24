@@ -48,10 +48,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])){//Ес�
     $user_id = (int) $_POST['select_user'];//Получение айди выбраного польвователя
 
     //Удаление всех выбраных им суперспособностей
-    $stmt = $db->prepare("DELETE * FROM superability WHERE human_id = ?");
+    $stmt = $db->prepare("DELETE FROM superability WHERE human_id = ?");
     $stmt -> execute([$user_id]);
     //Удаление выбранного пользователя
-    $stmt = $db->prepare("DELETE * FROM login_pass WHERE human_id = ?");
+    $stmt = $db->prepare("DELETE FROM login_pass WHERE human_id = ?");
     $stmt -> execute([$user_id]);
     $stmt = $db->prepare("DELETE FROM human WHERE id = ?");
     $stmt -> execute([$user_id]);
