@@ -95,12 +95,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
 <div class="container">
   <h2>Панель администратора</h2>
 
-  <h3>Статистика по суперспособностям</h3>
+  <h3>Статистика по суперспособностям:</h3>
   <section>Бессмертие: <?php print $count1 ?></section> <br>
   <section>Прохождение сквозь стены: <?php print $count2 ?></section> <br>
   <section>Левитация: <?php print $count3 ?></section> <br>
 
-  <h3>Выбери пользователя, которого хочешь отредактировать или удалить</h3>
+  <h3>Выбери пользователя:</h3>
   <form action="" method="POST">
     <select name="select_user" class ="group list" id="selector_user">
       <option selected disabled value ="0">Выбрать пользователя</option>
@@ -149,8 +149,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit'])){//Если б�
     $values['ability'] = $ability;
 
   ?>
-  
-  <h3>Режим редактирования</h3>
+  <br>
+  <h3>Режим редактирования:</h3>
   <form action="" method="POST">
     Имя:<br><input type="text" name="name" class="group" value="<?php print $values['name']; ?>">
     <br>

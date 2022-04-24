@@ -95,6 +95,7 @@ textarea{
     display: inline-block;
     background-color: aliceblue;
     border-radius: 3px;
+    margin-right: 10px;
 }
 .enter-exit:hover {
     background-color: cornflowerblue;
