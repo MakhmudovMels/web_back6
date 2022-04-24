@@ -9,7 +9,8 @@
 // Подробнее см. стр. 26 и 99 в учебном пособии Веб-программирование и веб-сервисы.
 
 $db = new PDO('mysql:host=localhost;dbname=u46502', 'u46502', '3119750', array(PDO::ATTR_PERSISTENT => true));
-$stmt = $db->prepare("SELECT * FROM admin WHERE id = 1");
+$stmt = $db->prepare("SELECT * FROM admin WHERE id = ?");
+$stmt -> execute([1]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if (empty($_SERVER['PHP_AUTH_USER']) ||
     empty($_SERVER['PHP_AUTH_PW']) ||
