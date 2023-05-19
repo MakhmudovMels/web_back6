@@ -1,5 +1,4 @@
-# web_back6
-Learning Backend at university
+# Learning Backend at university
 ## SQL-запросы для создания таблиц
 - CREATE TABLE human (
 id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -30,3 +29,4 @@ login varchar(32) NOT NULL,
 pass VARCHAR(64) NOT NULL,
 PRIMARY KEY (id)
 );
+### The work can be viewed at the link http://u46502.kubsu-dev.ru/web_back6/
